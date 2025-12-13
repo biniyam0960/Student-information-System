@@ -3,8 +3,6 @@
 
 This repository contains the source code for a database course project, utilizing a modern **MERN stack-like architecture** with **React** for the frontend, **Express.js** for the backend (Node.js), and **MySQL** as the primary database.
 
-
-
 ---
 
 ### ✨ Features
