@@ -54,7 +54,7 @@ Follow these steps to set up the project locally.
     npm run dev
    # or yarn dev
    ```
-    The API will run at http://localhost:5000
+    
    ---
 
 #### 3. Frontend Installation (React)
