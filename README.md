@@ -42,7 +42,7 @@ Follow these steps to set up the project locally.
 #### 2. Backend Installation (Express.js)
 1. navigate to the back end directory:
   ```bash
-     cd ../frontend
+     cd ../backend
   ```
 2. install dependencies:
      ```bash
