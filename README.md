@@ -69,7 +69,7 @@ Follow these steps to set up the project locally.
 ### 🤝 Contributing
 
 
-### 👥 Group Members & IDs
+### 👥 Group Members 
 
 This project was developed by:
 
