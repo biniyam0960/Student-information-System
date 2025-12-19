@@ -1,4 +1,4 @@
-import { db } from "../config/mockDb.js";
+import  db  from "../config/db.js";
 
 // Enrollments: enrollment_ID, student_ID, section_ID, status (enrolled|waitlisted|dropped), enrolled_at
 

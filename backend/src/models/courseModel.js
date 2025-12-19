@@ -1,4 +1,4 @@
-import { db } from "../config/mockDb.js";
+import  db  from "../config/db.js";
 
 // Courses: course_ID (PK), title, credits
 

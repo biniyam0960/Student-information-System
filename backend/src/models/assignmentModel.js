@@ -1,4 +1,4 @@
-import { db } from "../config/mockDb.js";
+import  db  from "../config/db.js";
 
 // Assignments: assignment_ID, section_ID, title, max_score, weight
 

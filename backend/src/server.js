@@ -2,7 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 
-import { db } from "./config/mockDb.js";
+import  db  from "./config/db.js";
 import { authRouter } from "./routes/auth.js";
 import { itemsRouter } from "./routes/items.js";
 import { studentRouter } from "./routes/students.js";

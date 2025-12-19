@@ -1,4 +1,4 @@
-import { db } from "../config/mockDb.js";
+import  db  from "../config/db.js";
 
 // Students table:
 // student_ID (PK), user_ID (FK to users), student_ID_number, date_of_birth,

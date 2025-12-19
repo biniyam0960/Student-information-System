@@ -4,6 +4,7 @@ import { authMiddleware } from "../middleware/auth.js";
 import { register, login, me } from "../controllers/authController.js";
 import { validateRequest } from "../middleware/validate.js";
 
+
 export const authRouter = express.Router();
 
 // Public registration (no JWT required). Controller will force non-admins to student role.
