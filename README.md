@@ -37,14 +37,25 @@ Follow these steps to set up the project locally.
 
 #### 1. Database Setup
 
-1
+
 
 #### 2. Backend Installation (Express.js)
-
-
-
-3.  **Configuration:** 
-
+1. navigate to the back end directory:
+  ```bash
+     cd ../backend
+  ```
+2. install dependencies:
+     ```bash
+     npm install
+   # or yarn install
+     ```
+3. start the backend server:
+    ```bash
+    npm run dev
+   # or yarn dev
+   ```
+    
+   ---
 
 #### 3. Frontend Installation (React)
 
@@ -57,7 +68,8 @@ Follow these steps to set up the project locally.
     npm install
     # or yarn install
     ```
-3.  Start the React development server:
+    
+4.  Start the React development server:
     ```bash
     npm start
     # or yarn start
@@ -69,7 +81,7 @@ Follow these steps to set up the project locally.
 ### 🤝 Contributing
 
 
-### 👥 Group Members & IDs
+### 👥 Group Members 
 
 This project was developed by:
 
