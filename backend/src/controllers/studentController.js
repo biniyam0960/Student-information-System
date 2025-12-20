@@ -1,4 +1,5 @@
 import { body } from "express-validator";
+import bcrypt from "bcryptjs";
 import {
   createStudent,
   getAllStudents,
@@ -7,9 +8,17 @@ import {
   updateStudent,
   deleteStudent,
 } from "../models/studentModel.js";
+import {
+  findUserByEmail,
+  createUser,
+} from "../models/userModel.js";
 
 export const createStudentValidators = [
-  body("user_ID").isInt({ gt: 0 }),
+  body("username").isString().isLength({ min: 3 }).trim(),
+  body("email").isEmail().normalizeEmail(),
+  body("password").isLength({ min: 6 }),
+  body("first_name").isString().notEmpty().trim(),
+  body("last_name").isString().notEmpty().trim(),
   body("student_ID_number").isString().notEmpty().trim(),
   body("date_of_birth").isISO8601().toDate(),
   body("gender").isIn(["male", "female", "other"]),
@@ -30,7 +39,11 @@ export const updateStudentValidators = [
 export async function createStudentHandler(req, res, next) {
   try {
     const {
-      user_ID,
+      username,
+      email,
+      password,
+      first_name,
+      last_name,
       student_ID_number,
       date_of_birth,
       gender,
@@ -38,8 +51,27 @@ export async function createStudentHandler(req, res, next) {
       current_status,
     } = req.body;
 
+    // Check if email already exists
+    const existing = await findUserByEmail(email);
+    if (existing) {
+      return res.status(409).json({ error: "Email already registered" });
+    }
+
+    const passwordHash = await bcrypt.hash(password, 10);
+
+    // Create user account
+    const user = await createUser({
+      username,
+      passwordHash,
+      email,
+      role: "student",
+      firstName: first_name,
+      lastName: last_name,
+    });
+
+    // Create student profile
     const student = await createStudent({
-      userId: user_ID,
+      userId: user.user_ID,
       studentIdNumber: student_ID_number,
       dateOfBirth: date_of_birth,
       gender,
@@ -47,7 +79,11 @@ export async function createStudentHandler(req, res, next) {
       currentStatus: current_status,
     });
 
-    res.status(201).json(student);
+    res.status(201).json({
+      user,
+      student,
+      message: "Student created successfully"
+    });
   } catch (err) {
     next(err);
   }

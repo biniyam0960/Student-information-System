@@ -5,6 +5,7 @@ import {
   findUserByEmail,
   findUserById,
   createUser,
+  updateUserPassword,
 } from "../models/userModel.js";
 
 export async function register(req, res, next) {
@@ -30,30 +31,18 @@ export async function register(req, res, next) {
 
     const passwordHash = await bcrypt.hash(password, 10);
 
-    // Only admins can create non-student roles
-    let finalRole = role;
-    if (!req.user || req.user.role !== "admin") {
-      finalRole = "student";
-    }
-
     const user = await createUser({
       username,
       passwordHash,
       email,
-      role: finalRole,
+      role,
       firstName: first_name,
       lastName: last_name,
     });
 
-    const token = signToken({
-      userId: user.user_ID,
-      role: user.role,
-      email: user.email,
-    });
-
     res.status(201).json({
-      token,
       user,
+      message: "User created successfully"
     });
   } catch (err) {
     next(err);
@@ -114,6 +103,35 @@ export async function me(req, res, next) {
     }
 
     res.json(user);
+  } catch (err) {
+    next(err);
+  }
+}
+
+export async function changePassword(req, res, next) {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { currentPassword, newPassword } = req.body;
+    const userId = req.user.userId;
+
+    const user = await findUserById(userId);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const isValid = await bcrypt.compare(currentPassword, user.password_hash);
+    if (!isValid) {
+      return res.status(401).json({ error: "Current password is incorrect" });
+    }
+
+    const newPasswordHash = await bcrypt.hash(newPassword, 10);
+    await updateUserPassword(userId, newPasswordHash);
+
+    res.json({ message: "Password changed successfully" });
   } catch (err) {
     next(err);
   }

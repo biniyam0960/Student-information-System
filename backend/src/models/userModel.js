@@ -15,7 +15,7 @@ export async function findUserByEmail(email) {
 
 export async function findUserById(userId) {
   const [rows] = await db.query(
-    `SELECT user_ID, username, email, role, first_name, last_name
+    `SELECT user_ID, username, email, role, first_name, last_name, password_hash
      FROM users
      WHERE user_ID = ?`,
     [userId]
@@ -45,6 +45,14 @@ export async function createUser({
     first_name: firstName,
     last_name: lastName,
   };
+}
+
+export async function updateUserPassword(userId, passwordHash) {
+  const [result] = await db.query(
+    `UPDATE users SET password_hash = ? WHERE user_ID = ?`,
+    [passwordHash, userId]
+  );
+  return result.affectedRows > 0;
 }
 
 
