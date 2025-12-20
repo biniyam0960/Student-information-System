@@ -1,7 +1,6 @@
 import  db  from "../config/db.js";
 
-// Users table:
-// user_ID (PK), username, password_hash, email, role, first_name, last_name
+
 
 export async function findUserByEmail(email) {
   const [rows] = await db.query(

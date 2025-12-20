@@ -51,7 +51,7 @@ export async function createStudentHandler(req, res, next) {
       current_status,
     } = req.body;
 
-    // Check if email already exists
+   
     const existing = await findUserByEmail(email);
     if (existing) {
       return res.status(409).json({ error: "Email already registered" });
@@ -59,7 +59,7 @@ export async function createStudentHandler(req, res, next) {
 
     const passwordHash = await bcrypt.hash(password, 10);
 
-    // Create user account
+ 
     const user = await createUser({
       username,
       passwordHash,
@@ -69,7 +69,7 @@ export async function createStudentHandler(req, res, next) {
       lastName: last_name,
     });
 
-    // Create student profile
+    
     const student = await createStudent({
       userId: user.user_ID,
       studentIdNumber: student_ID_number,
@@ -107,7 +107,7 @@ export async function getStudentHandler(req, res, next) {
       return res.status(404).json({ error: "Student not found" });
     }
 
-    // Students can only access their own record
+    
     if (req.user.role === "student") {
       const ownStudent = await getStudentByUserId(req.user.userId);
       if (!ownStudent || ownStudent.student_ID !== Number(id)) {

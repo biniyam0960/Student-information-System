@@ -35,7 +35,6 @@ export async function listAssignmentsForSectionHandler(req, res, next) {
   }
 }
 
-// Teachers enter/update grades
 export async function upsertGradeHandler(req, res, next) {
   try {
     const grade = await upsertGrade(req.body);
@@ -45,7 +44,6 @@ export async function upsertGradeHandler(req, res, next) {
   }
 }
 
-// Student: view own grades in a section
 export async function mySectionGradesHandler(req, res, next) {
   try {
     const student = await getStudentByUserId(req.user.userId);
@@ -62,7 +60,6 @@ export async function mySectionGradesHandler(req, res, next) {
   }
 }
 
-// Student GPA across all completed courses
 export async function myGpaHandler(req, res, next) {
   try {
     const student = await getStudentByUserId(req.user.userId);
@@ -71,7 +68,6 @@ export async function myGpaHandler(req, res, next) {
     }
     const grades = await listGradesByStudent(student.student_ID);
 
-    // Group by section_ID to compute final % per course (mock: no credits info)
     const bySection = new Map();
     for (const g of grades) {
       if (!bySection.has(g.section_ID)) bySection.set(g.section_ID, []);
@@ -85,7 +81,6 @@ export async function myGpaHandler(req, res, next) {
       finals.push({ section_ID: sectionId, percent: pct, letter });
     }
 
-    // Simple GPA: average grade points over all sections
     let totalPoints = 0;
     let count = 0;
     for (const f of finals) {

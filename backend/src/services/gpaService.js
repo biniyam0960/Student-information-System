@@ -1,8 +1,7 @@
-// Basic GPA calculation helpers operating on grade records and course credits.
-// In the mock DB environment this will be mostly illustrative.
+
 
 export function calculateFinalGradeForSection(grades) {
-  // grades: [{ score, max_score, weight }]
+  
   if (!grades || grades.length === 0) return null;
   let totalWeighted = 0;
   let totalWeight = 0;

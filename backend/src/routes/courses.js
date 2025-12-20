@@ -16,7 +16,7 @@ export const courseRouter = express.Router();
 courseRouter.get("/", authMiddleware, listCoursesHandler);
 courseRouter.get("/:id", authMiddleware, getCourseHandler);
 
-// Only admins manage courses
+
 courseRouter.post(
   "/",
   authMiddleware,

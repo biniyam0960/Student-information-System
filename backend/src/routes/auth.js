@@ -6,7 +6,7 @@ import { validateRequest } from "../middleware/validate.js";
 
 export const authRouter = express.Router();
 
-// Admin-only registration
+
 authRouter.post(
   "/register",
   authMiddleware,
@@ -29,7 +29,7 @@ authRouter.post(
   login
 );
 
-// Student password change
+
 authRouter.put(
   "/change-password",
   authMiddleware,

@@ -1,6 +1,6 @@
 import  db  from "../config/db.js";
 
-// Assignments: assignment_ID, section_ID, title, max_score, weight
+
 
 export async function createAssignment({
   section_ID,
