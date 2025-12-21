@@ -81,33 +81,25 @@ export async function myGpaHandler(req, res, next) {
       finals.push({ section_ID: sectionId, percent: pct, letter });
     }
 
-    let totalPoints = 0;
-    let count = 0;
-    for (const f of finals) {
-      const pts = letterGradeFromPercent(f.percent)
-        ? (f.letterPoints = null, null)
-        : null;
-    }
-
     let gpa = null;
-    if (finals.length) {
+    if (finals.length > 0) {
       let sum = 0;
-      let n = 0;
+      let count = 0;
       for (const f of finals) {
         const letter = f.letter;
         if (!letter) continue;
-        // reuse gradePointsFromLetter lazily
-        // 4=A, 3=B, 2=C, 1=D, 0=F
-        let pts = 0;
-        if (letter === "A") pts = 4;
-        else if (letter === "B") pts = 3;
-        else if (letter === "C") pts = 2;
-        else if (letter === "D") pts = 1;
-        else pts = 0;
-        sum += pts;
-        n++;
+        
+        let points = 0;
+        if (letter === "A") points = 4;
+        else if (letter === "B") points = 3;
+        else if (letter === "C") points = 2;
+        else if (letter === "D") points = 1;
+        else points = 0;
+        
+        sum += points;
+        count++;
       }
-      gpa = n ? sum / n : null;
+      gpa = count > 0 ? sum / count : null;
     }
 
     res.json({
