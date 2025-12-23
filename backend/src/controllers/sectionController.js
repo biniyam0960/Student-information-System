@@ -33,7 +33,7 @@ export async function createSectionHandler(req, res, next) {
 
 export async function listSectionsHandler(req, res, next) {
   try {
-    // Teachers see only their sections; admins see all
+    
     if (req.user.role === "teacher") {
       const sections = await getSectionsByTeacher(req.user.userId);
       return res.json(sections);

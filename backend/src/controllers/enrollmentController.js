@@ -67,9 +67,7 @@ export async function dropEnrollmentHandler(req, res, next) {
       existing.enrollment_ID,
       "dropped"
     );
-
-    // NOTE: In a real DB-backed system, here we'd pull the first waitlisted student and promote them.
-
+    
     res.json(updated);
   } catch (err) {
     next(err);

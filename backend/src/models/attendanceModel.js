@@ -1,6 +1,6 @@
-import { db } from "../config/mockDb.js";
+import  db  from "../config/db.js";
 
-// Attendance: attendance_ID, section_ID, student_ID, date, status (present|absent|late)
+
 
 export async function markAttendance({
   section_ID,

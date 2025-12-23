@@ -13,7 +13,7 @@ export const enrollmentRouter = express.Router();
 
 enrollmentRouter.use(authMiddleware);
 
-// Students: enroll, drop, list own enrollments
+
 enrollmentRouter.post(
   "/",
   requireRole("student"),
@@ -36,7 +36,7 @@ enrollmentRouter.get(
   listMyEnrollmentsHandler
 );
 
-// Admin/teacher: list enrollments for a section
+
 enrollmentRouter.get(
   "/section/:sectionId",
   requireRole("admin", "teacher"),

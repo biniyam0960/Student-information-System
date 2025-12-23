@@ -15,7 +15,7 @@ export const gradeRouter = express.Router();
 
 gradeRouter.use(authMiddleware);
 
-// Teachers: assignments & grades
+
 gradeRouter.post(
   "/assignments",
   requireRole("teacher", "admin"),
@@ -38,7 +38,7 @@ gradeRouter.post(
   upsertGradeHandler
 );
 
-// Students: view own grades and GPA
+
 gradeRouter.get(
   "/my/sections/:sectionId",
   requireRole("student"),

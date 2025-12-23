@@ -1,6 +1,5 @@
-import { db } from "../config/mockDb.js";
+import  db  from "../config/db.js";
 
-// Grades: grade_ID, assignment_ID, student_ID, score
 
 export async function upsertGrade({ assignment_ID, student_ID, score }) {
   await db.query(

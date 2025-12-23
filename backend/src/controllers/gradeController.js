@@ -35,7 +35,6 @@ export async function listAssignmentsForSectionHandler(req, res, next) {
   }
 }
 
-// Teachers enter/update grades
 export async function upsertGradeHandler(req, res, next) {
   try {
     const grade = await upsertGrade(req.body);
@@ -45,7 +44,6 @@ export async function upsertGradeHandler(req, res, next) {
   }
 }
 
-// Student: view own grades in a section
 export async function mySectionGradesHandler(req, res, next) {
   try {
     const student = await getStudentByUserId(req.user.userId);
@@ -62,7 +60,6 @@ export async function mySectionGradesHandler(req, res, next) {
   }
 }
 
-// Student GPA across all completed courses
 export async function myGpaHandler(req, res, next) {
   try {
     const student = await getStudentByUserId(req.user.userId);
@@ -71,7 +68,6 @@ export async function myGpaHandler(req, res, next) {
     }
     const grades = await listGradesByStudent(student.student_ID);
 
-    // Group by section_ID to compute final % per course (mock: no credits info)
     const bySection = new Map();
     for (const g of grades) {
       if (!bySection.has(g.section_ID)) bySection.set(g.section_ID, []);
@@ -85,34 +81,25 @@ export async function myGpaHandler(req, res, next) {
       finals.push({ section_ID: sectionId, percent: pct, letter });
     }
 
-    // Simple GPA: average grade points over all sections
-    let totalPoints = 0;
-    let count = 0;
-    for (const f of finals) {
-      const pts = letterGradeFromPercent(f.percent)
-        ? (f.letterPoints = null, null)
-        : null;
-    }
-
     let gpa = null;
-    if (finals.length) {
+    if (finals.length > 0) {
       let sum = 0;
-      let n = 0;
+      let count = 0;
       for (const f of finals) {
         const letter = f.letter;
         if (!letter) continue;
-        // reuse gradePointsFromLetter lazily
-        // 4=A, 3=B, 2=C, 1=D, 0=F
-        let pts = 0;
-        if (letter === "A") pts = 4;
-        else if (letter === "B") pts = 3;
-        else if (letter === "C") pts = 2;
-        else if (letter === "D") pts = 1;
-        else pts = 0;
-        sum += pts;
-        n++;
+        
+        let points = 0;
+        if (letter === "A") points = 4;
+        else if (letter === "B") points = 3;
+        else if (letter === "C") points = 2;
+        else if (letter === "D") points = 1;
+        else points = 0;
+        
+        sum += points;
+        count++;
       }
-      gpa = n ? sum / n : null;
+      gpa = count > 0 ? sum / count : null;
     }
 
     res.json({

@@ -2,7 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 
-import { db } from "./config/mockDb.js";
+import  db  from "./config/db.js";
 import { authRouter } from "./routes/auth.js";
 import { itemsRouter } from "./routes/items.js";
 import { studentRouter } from "./routes/students.js";
@@ -33,8 +33,7 @@ app.use("/api/enrollments", enrollmentRouter);
 app.use("/api/grades", gradeRouter);
 app.use("/api/attendance", attendanceRouter);
 
-// Centralized error handler
-// eslint-disable-next-line no-unused-vars
+
 app.use((err, req, res, next) => {
   console.error(err);
   res

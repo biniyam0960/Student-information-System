@@ -18,7 +18,7 @@ sectionRouter.use(authMiddleware);
 sectionRouter.get("/", requireRole("admin", "teacher", "student"), listSectionsHandler);
 sectionRouter.get("/:id", requireRole("admin", "teacher", "student"), getSectionHandler);
 
-// Only admins can manage sections
+
 sectionRouter.post(
   "/",
   requireRole("admin"),

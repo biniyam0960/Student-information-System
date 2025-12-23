@@ -1,8 +1,9 @@
-import { db } from "../config/mockDb.js";
+import db from "../config/db.js";
 
-// Students table:
-// student_ID (PK), user_ID (FK to users), student_ID_number, date_of_birth,
-// gender, address, current_status
+/**
+ * Student Model - Handles student data operations
+ * Maintains relationship between users and student profiles
+ */
 
 export async function createStudent({
   userId,
@@ -10,8 +11,13 @@ export async function createStudent({
   dateOfBirth,
   gender,
   address,
-  currentStatus,
+  currentStatus = 'active',
 }) {
+  // Validate required fields
+  if (!userId || !studentIdNumber) {
+    throw new Error('userId and studentIdNumber are required');
+  }
+  
   const [result] = await db.query(
     `INSERT INTO students
       (user_ID, student_ID_number, date_of_birth, gender, address, current_status)
@@ -19,28 +25,26 @@ export async function createStudent({
     [userId, studentIdNumber, dateOfBirth, gender, address, currentStatus]
   );
 
-  const [rows] = await db.query(
-    `SELECT *
-     FROM students
-     WHERE student_ID = ?`,
-    [result.insertId]
-  );
-
-  return rows[0];
+  return getStudentById(result.insertId);
 }
 
 export async function getAllStudents() {
   const [rows] = await db.query(
-    `SELECT s.*, u.username, u.email, u.first_name, u.last_name
+    `SELECT s.*, u.username, u.email, u.first_name, u.last_name, u.role
      FROM students s
-     JOIN users u ON s.user_ID = u.user_ID`
+     JOIN users u ON s.user_ID = u.user_ID
+     ORDER BY u.last_name, u.first_name`
   );
   return rows;
 }
 
 export async function getStudentById(studentId) {
+  if (!studentId) {
+    return null;
+  }
+
   const [rows] = await db.query(
-    `SELECT s.*, u.username, u.email, u.first_name, u.last_name
+    `SELECT s.*, u.username, u.email, u.first_name, u.last_name, u.role
      FROM students s
      JOIN users u ON s.user_ID = u.user_ID
      WHERE s.student_ID = ?`,
@@ -50,8 +54,12 @@ export async function getStudentById(studentId) {
 }
 
 export async function getStudentByUserId(userId) {
+  if (!userId) {
+    return null;
+  }
+
   const [rows] = await db.query(
-    `SELECT s.*, u.username, u.email, u.first_name, u.last_name
+    `SELECT s.*, u.username, u.email, u.first_name, u.last_name, u.role
      FROM students s
      JOIN users u ON s.user_ID = u.user_ID
      WHERE s.user_ID = ?`,
@@ -61,6 +69,10 @@ export async function getStudentByUserId(userId) {
 }
 
 export async function updateStudent(studentId, fields) {
+  if (!studentId) {
+    throw new Error('studentId is required');
+  }
+
   const {
     student_ID_number,
     date_of_birth,
@@ -71,11 +83,11 @@ export async function updateStudent(studentId, fields) {
 
   const [result] = await db.query(
     `UPDATE students
-     SET student_ID_number = ?,
-         date_of_birth = ?,
-         gender = ?,
-         address = ?,
-         current_status = ?
+     SET student_ID_number = COALESCE(?, student_ID_number),
+         date_of_birth = COALESCE(?, date_of_birth),
+         gender = COALESCE(?, gender),
+         address = COALESCE(?, address),
+         current_status = COALESCE(?, current_status)
      WHERE student_ID = ?`,
     [
       student_ID_number,
@@ -95,12 +107,27 @@ export async function updateStudent(studentId, fields) {
 }
 
 export async function deleteStudent(studentId) {
+  if (!studentId) {
+    return false;
+  }
+
   const [result] = await db.query(
-    `DELETE FROM students
-     WHERE student_ID = ?`,
+    `DELETE FROM students WHERE student_ID = ?`,
     [studentId]
   );
   return result.affectedRows > 0;
+}
+
+export async function getStudentsByStatus(status = 'active') {
+  const [rows] = await db.query(
+    `SELECT s.*, u.username, u.email, u.first_name, u.last_name
+     FROM students s
+     JOIN users u ON s.user_ID = u.user_ID
+     WHERE s.current_status = ?
+     ORDER BY u.last_name, u.first_name`,
+    [status]
+  );
+  return rows;
 }
 
 

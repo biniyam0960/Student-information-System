@@ -1,6 +1,6 @@
-import { db } from "../config/mockDb.js";
+import  db  from "../config/db.js";
 
-// Courses: course_ID (PK), title, credits
+
 
 export async function createCourse({ title, credits }) {
   const [result] = await db.query(

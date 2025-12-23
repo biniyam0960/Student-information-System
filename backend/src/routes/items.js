@@ -1,5 +1,5 @@
 import express from "express";
-import { db } from "../config/mockDb.js";
+import  db  from "../config/db.js";
 import { authMiddleware } from "../middleware/auth.js";
 
 export const itemsRouter = express.Router();

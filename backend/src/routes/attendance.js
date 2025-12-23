@@ -12,7 +12,7 @@ export const attendanceRouter = express.Router();
 
 attendanceRouter.use(authMiddleware);
 
-// Teachers/admins: mark attendance
+
 attendanceRouter.post(
   "/",
   requireRole("teacher", "admin"),
@@ -27,7 +27,7 @@ attendanceRouter.get(
   listSectionAttendanceHandler
 );
 
-// Students: view their own attendance
+
 attendanceRouter.get(
   "/my",
   requireRole("student"),
