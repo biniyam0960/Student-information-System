@@ -19,7 +19,9 @@ import {
  * Professional, secure student management for the Student Information System
  */
 
-// Validation rules for student creation
+/**
+ * Validation rules for student creation
+ */
 export const createStudentValidators = [
   body("username").isString().isLength({ min: 3, max: 50 }).trim()
     .withMessage("Username must be 3-50 characters"),
@@ -43,7 +45,9 @@ export const createStudentValidators = [
     .withMessage("Status must be active, inactive, graduated, or suspended"),
 ];
 
-// Validation rules for student updates
+/**
+ * Validation rules for student updates
+ */
 export const updateStudentValidators = [
   body("student_ID_number").optional().isString().isLength({ min: 1, max: 20 }).trim(),
   body("date_of_birth").optional().isISO8601().toDate(),
@@ -52,7 +56,12 @@ export const updateStudentValidators = [
   body("current_status").optional().isIn(["active", "inactive", "graduated", "suspended"]),
 ];
 
-// Create complete student (user + student profile)
+/**
+ * Creates complete student (user + student profile)
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @param {Function} next - Express next middleware function
+ */
 export async function createStudentHandler(req, res, next) {
   try {
     const errors = validationResult(req);
@@ -77,7 +86,6 @@ export async function createStudentHandler(req, res, next) {
       current_status = "active",
     } = req.body;
 
-    // Check if email already exists
     const existing = await findUserByEmail(email);
     if (existing) {
       return res.status(409).json({
@@ -86,10 +94,8 @@ export async function createStudentHandler(req, res, next) {
       });
     }
 
-    // Hash password securely
     const passwordHash = await bcrypt.hash(password, 12);
 
-    // Create user account
     const user = await createUser({
       username,
       passwordHash,
@@ -99,7 +105,6 @@ export async function createStudentHandler(req, res, next) {
       lastName: last_name,
     });
 
-    // Create student profile
     const student = await createStudent({
       userId: user.user_ID,
       studentIdNumber: student_ID_number,
@@ -133,7 +138,12 @@ export async function createStudentHandler(req, res, next) {
   }
 }
 
-// List all students (admin/teacher only)
+/**
+ * Lists all students (admin/teacher only)
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @param {Function} next - Express next middleware function
+ */
 export async function listStudentsHandler(req, res, next) {
   try {
     const { status } = req.query;
@@ -162,7 +172,12 @@ export async function listStudentsHandler(req, res, next) {
   }
 }
 
-// Get single student by ID
+/**
+ * Gets single student by ID
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @param {Function} next - Express next middleware function
+ */
 export async function getStudentHandler(req, res, next) {
   try {
     const { id } = req.params;
@@ -182,7 +197,6 @@ export async function getStudentHandler(req, res, next) {
       });
     }
 
-    // Students can only access their own record
     if (req.user.role === "student") {
       const ownStudent = await getStudentByUserId(req.user.userId);
       if (!ownStudent || ownStudent.student_ID !== Number(id)) {
@@ -207,7 +221,12 @@ export async function getStudentHandler(req, res, next) {
   }
 }
 
-// Update student information
+/**
+ * Updates student information
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @param {Function} next - Express next middleware function
+ */
 export async function updateStudentHandler(req, res, next) {
   try {
     const errors = validationResult(req);
@@ -258,7 +277,12 @@ export async function updateStudentHandler(req, res, next) {
   }
 }
 
-// Delete student
+/**
+ * Deletes a student
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @param {Function} next - Express next middleware function
+ */
 export async function deleteStudentHandler(req, res, next) {
   try {
     const { id } = req.params;

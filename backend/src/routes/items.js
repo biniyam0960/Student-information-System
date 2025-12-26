@@ -1,3 +1,8 @@
+/**
+ * Items Router - Express router for general item management
+ * Handles CRUD operations for user items
+ */
+
 import express from "express";
 import  db  from "../config/db.js";
 import { authMiddleware } from "../middleware/auth.js";
@@ -6,6 +11,9 @@ export const itemsRouter = express.Router();
 
 itemsRouter.use(authMiddleware);
 
+/**
+ * Gets all items for authenticated user
+ */
 itemsRouter.get("/", async (req, res, next) => {
   try {
     const [rows] = await db.query(
@@ -18,6 +26,9 @@ itemsRouter.get("/", async (req, res, next) => {
   }
 });
 
+/**
+ * Creates a new item for authenticated user
+ */
 itemsRouter.post("/", async (req, res, next) => {
   try {
     const { name, description } = req.body;
@@ -40,6 +51,9 @@ itemsRouter.post("/", async (req, res, next) => {
   }
 });
 
+/**
+ * Gets a specific item by ID for authenticated user
+ */
 itemsRouter.get("/:id", async (req, res, next) => {
   try {
     const [rows] = await db.query(
@@ -55,6 +69,9 @@ itemsRouter.get("/:id", async (req, res, next) => {
   }
 });
 
+/**
+ * Updates an item for authenticated user
+ */
 itemsRouter.put("/:id", async (req, res, next) => {
   try {
     const { name, description } = req.body;
@@ -75,6 +92,9 @@ itemsRouter.put("/:id", async (req, res, next) => {
   }
 });
 
+/**
+ * Deletes an item for authenticated user
+ */
 itemsRouter.delete("/:id", async (req, res, next) => {
   try {
     const [result] = await db.query(

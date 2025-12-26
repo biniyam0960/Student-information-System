@@ -1,3 +1,8 @@
+/**
+ * Grade Routes - Express router for grade and assignment management endpoints
+ * Handles HTTP routes for assignment creation, grade recording, and GPA calculation
+ */
+
 import express from "express";
 import { authMiddleware, requireRole } from "../middleware/auth.js";
 import { validateRequest } from "../middleware/validate.js";
@@ -14,7 +19,6 @@ import {
 export const gradeRouter = express.Router();
 
 gradeRouter.use(authMiddleware);
-
 
 gradeRouter.post(
   "/assignments",
@@ -37,7 +41,6 @@ gradeRouter.post(
   validateRequest,
   upsertGradeHandler
 );
-
 
 gradeRouter.get(
   "/my/sections/:sectionId",

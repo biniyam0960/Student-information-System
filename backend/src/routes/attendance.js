@@ -1,3 +1,8 @@
+/**
+ * Attendance Routes - Express router for attendance tracking endpoints
+ * Handles HTTP routes for attendance recording and retrieval
+ */
+
 import express from "express";
 import { authMiddleware, requireRole } from "../middleware/auth.js";
 import { validateRequest } from "../middleware/validate.js";
@@ -12,7 +17,6 @@ export const attendanceRouter = express.Router();
 
 attendanceRouter.use(authMiddleware);
 
-
 attendanceRouter.post(
   "/",
   requireRole("teacher", "admin"),
@@ -26,7 +30,6 @@ attendanceRouter.get(
   requireRole("teacher", "admin"),
   listSectionAttendanceHandler
 );
-
 
 attendanceRouter.get(
   "/my",

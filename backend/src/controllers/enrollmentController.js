@@ -1,3 +1,8 @@
+/**
+ * Enrollment Controller - HTTP request handlers for enrollment management
+ * Handles student enrollment, waitlisting, and capacity management
+ */
+
 import { body } from "express-validator";
 import { getStudentByUserId } from "../models/studentModel.js";
 import {
@@ -9,14 +14,21 @@ import {
 } from "../models/enrollmentModel.js";
 import { getSectionById, countEnrolledInSection } from "../models/sectionModel.js";
 
+/**
+ * Validation rules for enrollment requests
+ */
 export const enrollmentValidators = [
   body("section_ID").isInt({ gt: 0 }),
 ];
 
-// Student enroll in a section (handles capacity vs waitlist)
+/**
+ * Enrolls a student in a section (handles capacity vs waitlist logic)
+ * @param {Object} req - Express request object (contains section_ID and authenticated user)
+ * @param {Object} res - Express response object
+ * @param {Function} next - Express next middleware function
+ */
 export async function enrollInSectionHandler(req, res, next) {
   try {
-    // Map auth user -> student_ID
     const student = await getStudentByUserId(req.user.userId);
     if (!student) {
       return res.status(400).json({ error: "No student record for user" });
@@ -50,12 +62,19 @@ export async function enrollInSectionHandler(req, res, next) {
   }
 }
 
+/**
+ * Drops a student's enrollment from a section
+ * @param {Object} req - Express request object (contains section_ID and authenticated user)
+ * @param {Object} res - Express response object
+ * @param {Function} next - Express next middleware function
+ */
 export async function dropEnrollmentHandler(req, res, next) {
   try {
     const student = await getStudentByUserId(req.user.userId);
     if (!student) {
       return res.status(400).json({ error: "No student record for user" });
     }
+    
     const { section_ID } = req.body;
 
     const existing = await getEnrollment(student.student_ID, section_ID);
@@ -74,12 +93,19 @@ export async function dropEnrollmentHandler(req, res, next) {
   }
 }
 
+/**
+ * Retrieves all enrollments for the authenticated student
+ * @param {Object} req - Express request object (contains authenticated user)
+ * @param {Object} res - Express response object
+ * @param {Function} next - Express next middleware function
+ */
 export async function listMyEnrollmentsHandler(req, res, next) {
   try {
     const student = await getStudentByUserId(req.user.userId);
     if (!student) {
       return res.status(400).json({ error: "No student record for user" });
     }
+    
     const enrollments = await listEnrollmentsByStudent(student.student_ID);
     res.json(enrollments);
   } catch (err) {
@@ -87,6 +113,12 @@ export async function listMyEnrollmentsHandler(req, res, next) {
   }
 }
 
+/**
+ * Retrieves all enrollments for a specific section (teacher/admin access)
+ * @param {Object} req - Express request object (contains section ID in params)
+ * @param {Object} res - Express response object
+ * @param {Function} next - Express next middleware function
+ */
 export async function listEnrollmentsBySectionHandler(req, res, next) {
   try {
     const enrollments = await listEnrollmentsBySection(req.params.sectionId);

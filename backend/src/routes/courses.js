@@ -1,3 +1,8 @@
+/**
+ * Course Routes - Express router for course management endpoints
+ * Handles HTTP routes for course CRUD operations with authentication and authorization
+ */
+
 import express from "express";
 import { requireRole, authMiddleware } from "../middleware/auth.js";
 import { validateRequest } from "../middleware/validate.js";
@@ -15,7 +20,6 @@ export const courseRouter = express.Router();
 
 courseRouter.get("/", authMiddleware, listCoursesHandler);
 courseRouter.get("/:id", authMiddleware, getCourseHandler);
-
 
 courseRouter.post(
   "/",

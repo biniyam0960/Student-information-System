@@ -1,3 +1,8 @@
+/**
+ * Section Routes - Express router for course section management endpoints
+ * Handles HTTP routes for section CRUD operations with role-based access control
+ */
+
 import express from "express";
 import { authMiddleware, requireRole } from "../middleware/auth.js";
 import { validateRequest } from "../middleware/validate.js";
@@ -17,7 +22,6 @@ sectionRouter.use(authMiddleware);
 
 sectionRouter.get("/", requireRole("admin", "teacher", "student"), listSectionsHandler);
 sectionRouter.get("/:id", requireRole("admin", "teacher", "student"), getSectionHandler);
-
 
 sectionRouter.post(
   "/",

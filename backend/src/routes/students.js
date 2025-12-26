@@ -1,3 +1,8 @@
+/**
+ * Student Routes - Express router for student management endpoints
+ * Handles HTTP routes for student CRUD operations with role-based access control
+ */
+
 import express from "express";
 import { authMiddleware, requireRole } from "../middleware/auth.js";
 import { validateRequest } from "../middleware/validate.js";
@@ -13,16 +18,13 @@ import {
 
 export const studentRouter = express.Router();
 
-
 studentRouter.use(authMiddleware);
-
 
 studentRouter.get(
   "/",
   requireRole("admin", "teacher"),
   listStudentsHandler
 );
-
 
 studentRouter.post(
   "/",
@@ -32,13 +34,11 @@ studentRouter.post(
   createStudentHandler
 );
 
-
 studentRouter.get(
   "/:id",
   requireRole("admin", "teacher", "student"),
   getStudentHandler
 );
-
 
 studentRouter.put(
   "/:id",
@@ -47,7 +47,6 @@ studentRouter.put(
   validateRequest,
   updateStudentHandler
 );
-
 
 studentRouter.delete(
   "/:id",

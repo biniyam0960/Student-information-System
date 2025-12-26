@@ -5,6 +5,11 @@ import db from "../config/db.js";
  * Core user management for the Student Information System
  */
 
+/**
+ * Finds a user by email address
+ * @param {string} email - User email
+ * @returns {Object|null} User object or null
+ */
 export async function findUserByEmail(email) {
   if (!email) {
     return null;
@@ -19,6 +24,11 @@ export async function findUserByEmail(email) {
   return rows[0] || null;
 }
 
+/**
+ * Finds a user by ID
+ * @param {number} userId - User ID
+ * @returns {Object|null} User object or null
+ */
 export async function findUserById(userId) {
   if (!userId) {
     return null;
@@ -33,6 +43,11 @@ export async function findUserById(userId) {
   return rows[0] || null;
 }
 
+/**
+ * Creates a new user account
+ * @param {Object} userData - User information
+ * @returns {Object} Created user object
+ */
 export async function createUser({
   username,
   passwordHash,
@@ -41,12 +56,10 @@ export async function createUser({
   firstName,
   lastName,
 }) {
-  // Validate required fields
   if (!username || !passwordHash || !email) {
     throw new Error('username, passwordHash, and email are required');
   }
 
-  // Validate role
   const validRoles = ['student', 'teacher', 'admin'];
   if (!validRoles.includes(role)) {
     throw new Error('Invalid role. Must be student, teacher, or admin');
@@ -68,6 +81,12 @@ export async function createUser({
   };
 }
 
+/**
+ * Updates a user's password
+ * @param {number} userId - User ID
+ * @param {string} passwordHash - New password hash
+ * @returns {boolean} True if updated, false otherwise
+ */
 export async function updateUserPassword(userId, passwordHash) {
   if (!userId || !passwordHash) {
     throw new Error('userId and passwordHash are required');
@@ -80,6 +99,11 @@ export async function updateUserPassword(userId, passwordHash) {
   return result.affectedRows > 0;
 }
 
+/**
+ * Retrieves users by role
+ * @param {string} role - User role
+ * @returns {Array} Array of users with specified role
+ */
 export async function getUsersByRole(role) {
   const validRoles = ['student', 'teacher', 'admin'];
   if (!validRoles.includes(role)) {

@@ -1,3 +1,8 @@
+/**
+ * Enrollment Routes - Express router for student enrollment management endpoints
+ * Handles HTTP routes for enrollment, waitlisting, and enrollment tracking
+ */
+
 import express from "express";
 import { authMiddleware, requireRole } from "../middleware/auth.js";
 import { validateRequest } from "../middleware/validate.js";
@@ -12,7 +17,6 @@ import {
 export const enrollmentRouter = express.Router();
 
 enrollmentRouter.use(authMiddleware);
-
 
 enrollmentRouter.post(
   "/",
@@ -35,7 +39,6 @@ enrollmentRouter.get(
   requireRole("student"),
   listMyEnrollmentsHandler
 );
-
 
 enrollmentRouter.get(
   "/section/:sectionId",

@@ -1,8 +1,15 @@
+/**
+ * Student Information System (SIS) Backend Server
+ * Main entry point for the Express.js application
+ * Handles API routing, middleware setup, and database connection
+ */
+
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 
 import  db  from "./config/db.js";
+
 import { authRouter } from "./routes/auth.js";
 import { itemsRouter } from "./routes/items.js";
 import { studentRouter } from "./routes/students.js";
@@ -20,6 +27,9 @@ const PORT = process.env.PORT || 4000;
 app.use(cors());
 app.use(express.json());
 
+/**
+ * Health check endpoint
+ */
 app.get("/", (req, res) => {
   res.json({ message: "SIS backend API is running" });
 });
@@ -33,7 +43,9 @@ app.use("/api/enrollments", enrollmentRouter);
 app.use("/api/grades", gradeRouter);
 app.use("/api/attendance", attendanceRouter);
 
-
+/**
+ * Global error handling middleware
+ */
 app.use((err, req, res, next) => {
   console.error(err);
   res
@@ -41,6 +53,9 @@ app.use((err, req, res, next) => {
     .json({ error: err.message || "Server error" });
 });
 
+/**
+ * Database connection and server startup
+ */
 db.getConnection()
   .then((conn) => {
     conn.release();

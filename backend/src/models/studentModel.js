@@ -5,6 +5,11 @@ import db from "../config/db.js";
  * Maintains relationship between users and student profiles
  */
 
+/**
+ * Creates a new student record
+ * @param {Object} studentData - Student information
+ * @returns {Object} Created student object
+ */
 export async function createStudent({
   userId,
   studentIdNumber,
@@ -13,7 +18,6 @@ export async function createStudent({
   address,
   currentStatus = 'active',
 }) {
-  // Validate required fields
   if (!userId || !studentIdNumber) {
     throw new Error('userId and studentIdNumber are required');
   }
@@ -28,6 +32,10 @@ export async function createStudent({
   return getStudentById(result.insertId);
 }
 
+/**
+ * Retrieves all students with user information
+ * @returns {Array} Array of student objects with user details
+ */
 export async function getAllStudents() {
   const [rows] = await db.query(
     `SELECT s.*, u.username, u.email, u.first_name, u.last_name, u.role
@@ -38,6 +46,11 @@ export async function getAllStudents() {
   return rows;
 }
 
+/**
+ * Retrieves a student by ID
+ * @param {number} studentId - Student ID
+ * @returns {Object|null} Student object or null
+ */
 export async function getStudentById(studentId) {
   if (!studentId) {
     return null;
@@ -53,6 +66,11 @@ export async function getStudentById(studentId) {
   return rows[0] || null;
 }
 
+/**
+ * Retrieves a student by user ID
+ * @param {number} userId - User ID
+ * @returns {Object|null} Student object or null
+ */
 export async function getStudentByUserId(userId) {
   if (!userId) {
     return null;
@@ -68,6 +86,12 @@ export async function getStudentByUserId(userId) {
   return rows[0] || null;
 }
 
+/**
+ * Updates a student record
+ * @param {number} studentId - Student ID
+ * @param {Object} fields - Fields to update
+ * @returns {Object|null} Updated student or null
+ */
 export async function updateStudent(studentId, fields) {
   if (!studentId) {
     throw new Error('studentId is required');
@@ -106,6 +130,11 @@ export async function updateStudent(studentId, fields) {
   return getStudentById(studentId);
 }
 
+/**
+ * Deletes a student record
+ * @param {number} studentId - Student ID
+ * @returns {boolean} True if deleted, false otherwise
+ */
 export async function deleteStudent(studentId) {
   if (!studentId) {
     return false;
@@ -118,6 +147,11 @@ export async function deleteStudent(studentId) {
   return result.affectedRows > 0;
 }
 
+/**
+ * Retrieves students by status
+ * @param {string} status - Student status
+ * @returns {Array} Array of students with specified status
+ */
 export async function getStudentsByStatus(status = 'active') {
   const [rows] = await db.query(
     `SELECT s.*, u.username, u.email, u.first_name, u.last_name
