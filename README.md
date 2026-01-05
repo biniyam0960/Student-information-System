@@ -71,8 +71,8 @@ Follow these steps to set up the project locally.
     
 4.  Start the React development server:
     ```bash
-    npm start
-    # or yarn start
+    npm run dev
+  
     ```
     The application should open in your browser at `http://localhost:5173`.
 
