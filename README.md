@@ -74,7 +74,7 @@ Follow these steps to set up the project locally.
     npm start
     # or yarn start
     ```
-    The application should open in your browser at `http://localhost:3000`.
+    The application should open in your browser at `http://localhost:5173`.
 
 ---
 
