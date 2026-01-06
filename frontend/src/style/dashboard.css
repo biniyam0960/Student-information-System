@@ -1,0 +1,172 @@
+/* ===== RESET ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100%;
+  font-family: system-ui, sans-serif;
+  background: #f5f6f8;
+  color: #1f2937;
+  /* Dark gray for text */
+}
+
+/* ===== LAYOUT (ALL ROLES) ===== */
+.admin-layout,
+.teacher-layout,
+.student-layout {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-link {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.nav-link.active {
+  border-bottom: 2px solid #22c55e;
+}
+
+/* ===== MAIN CONTENT ===== */
+.admin-content,
+.teacher-content,
+.student-content {
+  flex: 1;
+  padding: 32px;
+}
+
+/* ===== HEADINGS ===== */
+h2 {
+  font-size: 26px;
+  color: #22c55e;
+  margin-bottom: 20px;
+}
+
+h3 {
+  margin-bottom: 12px;
+}
+
+/* ===== CARD ===== */
+.card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, .1);
+}
+
+/* ===== FORMS ===== */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+input,
+select {
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: #22c55e;
+}
+
+/* ===== SEARCH ===== */
+.search-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 18px;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+}
+
+/* ===== TABLE ===== */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+}
+
+.table th,
+.table td {
+  padding: 12px;
+}
+
+.table th {
+  background: #e5e7eb;
+}
+
+/* ===== BUTTONS ===== */
+button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  background: #0a0b61;
+  /* BLUE */
+  color: #fbfbff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #04ed59;
+  /* GREEN */
+}
+
+button:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+}
+
+/* ===== COURSE GRID ===== */
+.course-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+/* ===== REGISTRATION ===== */
+.registration-layout {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+}
+
+.summary {
+  background: #fff;
+  padding: 16px;
+  border-radius: 8px;
+}
+
+/* ===== REMOVE NUMBER SPINNER ===== */
+.no-spinner::-webkit-inner-spin-button,
+.no-spinner::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+
+  .admin-content,
+  .teacher-content,
+  .student-content {
+    padding: 20px;
+  }
+
+  .registration-layout {
+    grid-template-columns: 1fr;
+  }
+}
