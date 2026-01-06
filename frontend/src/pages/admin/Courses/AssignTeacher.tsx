@@ -4,6 +4,9 @@ interface Course {
   id: string;
   code: string;
   title: string;
+  year?: number;
+  semester?: number;
+  section?: string;
 }
 
 interface Teacher {
@@ -93,7 +96,7 @@ const AssignTeacher = ({ onTeacherAssigned }: Props) => {
           <option value="">Select Course</option>
           {courses.map((c) => (
             <option key={c.id} value={c.id}>
-              {c.code} — {c.title}
+              {c.code} — {c.title} {c.year ? `(Year: ${c.year}, Sem: ${c.semester}, Sec: ${c.section})` : ""}
             </option>
           ))}
         </select>
