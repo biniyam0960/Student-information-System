@@ -6,15 +6,11 @@ import { db } from "../config/mockDb.js";
 
 // Used ONLY for login
 export async function findUserByEmail(email) {
-  if (!email) {
-    return null;
-  }
-
   const [rows] = await db.query(
     `SELECT user_ID, username, password_hash, email, role, first_name, last_name
      FROM users
      WHERE email = ?`,
-    [email.toLowerCase()]
+    [email]
   );
 
   console.log("findUserByEmail result:", rows);
@@ -23,12 +19,8 @@ export async function findUserByEmail(email) {
 
 // Used for /me and profile endpoints (NO password)
 export async function findUserById(userId) {
-  if (!userId) {
-    return null;
-  }
-
   const [rows] = await db.query(
-    `SELECT user_ID, username, email, role, first_name, last_name, password_hash
+    `SELECT user_ID, username, email, role, first_name, last_name
      FROM users
      WHERE user_ID = ?`,
     [userId]
@@ -47,15 +39,6 @@ export async function createUser({
   first_name,
   last_name,
 }) {
-  if (!username || !passwordHash || !email) {
-    throw new Error('username, passwordHash, and email are required');
-  }
-
-  const validRoles = ['student', 'teacher', 'admin'];
-  if (!validRoles.includes(role)) {
-    throw new Error('Invalid role. Must be student, teacher, or admin');
-  }
-  
   const [result] = await db.query(
     `INSERT INTO users (username, password_hash, email, role, first_name, last_name)
      VALUES (?, ?, ?, ?, ?, ?)`,
@@ -67,7 +50,7 @@ export async function createUser({
   const user = {
     user_ID,
     username,
-    email: email.toLowerCase(),
+    email,
     role,
     first_name,
     last_name,
