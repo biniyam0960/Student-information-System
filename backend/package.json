@@ -9,19 +9,35 @@
     "start": "node src/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "nahom,biniyam ephrem,murad",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
-    "express": "^4.18.2",
+    "dotenv": "^16.6.1",
+    "express": "^4.22.1",
     "express-validator": "^6.15.0",
+<<<<<<< HEAD
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.16.0",
     "uuid": "^9.0.0"
+=======
+    "jsonwebtoken": "^9.0.3",
+    "mysql2": "^3.16.0",
+    "react-router": "^6.30.2",
+    "react-router-dom": "^6.30.2",
+    "sequelize": "^6.37.7"
+>>>>>>> c268119 (auth is done)
   },
   "devDependencies": {
     "nodemon": "^3.1.11"
-  }
+  },
+  "keywords": [
+    "student",
+    "information",
+    "system",
+    "node",
+    "express",
+    "mysql"
+  ]
 }

@@ -1,15 +1,10 @@
-import db from "../config/db.js";
+// src/models/userModel.js
+import { db } from "../config/mockDb.js";
 
-/**
- * User Model - Handles user authentication and profile data
- * Core user management for the Student Information System
- */
+// Users table:
+// user_ID (PK), username, password_hash, email, role, first_name, last_name
 
-/**
- * Finds a user by email address
- * @param {string} email - User email
- * @returns {Object|null} User object or null
- */
+// Used ONLY for login
 export async function findUserByEmail(email) {
   if (!email) {
     return null;
@@ -21,14 +16,12 @@ export async function findUserByEmail(email) {
      WHERE email = ?`,
     [email.toLowerCase()]
   );
+
+  console.log("findUserByEmail result:", rows);
   return rows[0] || null;
 }
 
-/**
- * Finds a user by ID
- * @param {number} userId - User ID
- * @returns {Object|null} User object or null
- */
+// Used for /me and profile endpoints (NO password)
 export async function findUserById(userId) {
   if (!userId) {
     return null;
@@ -40,21 +33,19 @@ export async function findUserById(userId) {
      WHERE user_ID = ?`,
     [userId]
   );
+
+  console.log("findUserById result:", rows);
   return rows[0] || null;
 }
 
-/**
- * Creates a new user account
- * @param {Object} userData - User information
- * @returns {Object} Created user object
- */
+// Used during registration
 export async function createUser({
   username,
-  passwordHash,
+  password_hash,
   email,
-  role = 'student',
-  firstName,
-  lastName,
+  role,
+  first_name,
+  last_name,
 }) {
   if (!username || !passwordHash || !email) {
     throw new Error('username, passwordHash, and email are required');
@@ -68,56 +59,21 @@ export async function createUser({
   const [result] = await db.query(
     `INSERT INTO users (username, password_hash, email, role, first_name, last_name)
      VALUES (?, ?, ?, ?, ?, ?)`,
-    [username, passwordHash, email.toLowerCase(), role, firstName, lastName]
+    [username, password_hash, email, role, first_name, last_name]
   );
 
-  return {
-    user_ID: result.insertId,
+  const user_ID = result?.insertId ?? Math.floor(Math.random() * 10000);
+
+  const user = {
+    user_ID,
     username,
     email: email.toLowerCase(),
     role,
-    first_name: firstName,
-    last_name: lastName,
+    first_name,
+    last_name,
+    password_hash, // needed internally
   };
+
+  console.log("User created in DB:", user);
+  return user;
 }
-
-/**
- * Updates a user's password
- * @param {number} userId - User ID
- * @param {string} passwordHash - New password hash
- * @returns {boolean} True if updated, false otherwise
- */
-export async function updateUserPassword(userId, passwordHash) {
-  if (!userId || !passwordHash) {
-    throw new Error('userId and passwordHash are required');
-  }
-
-  const [result] = await db.query(
-    `UPDATE users SET password_hash = ? WHERE user_ID = ?`,
-    [passwordHash, userId]
-  );
-  return result.affectedRows > 0;
-}
-
-/**
- * Retrieves users by role
- * @param {string} role - User role
- * @returns {Array} Array of users with specified role
- */
-export async function getUsersByRole(role) {
-  const validRoles = ['student', 'teacher', 'admin'];
-  if (!validRoles.includes(role)) {
-    throw new Error('Invalid role');
-  }
-
-  const [rows] = await db.query(
-    `SELECT user_ID, username, email, role, first_name, last_name
-     FROM users
-     WHERE role = ?
-     ORDER BY last_name, first_name`,
-    [role]
-  );
-  return rows;
-}
-
-

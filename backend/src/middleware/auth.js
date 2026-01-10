@@ -1,37 +1,40 @@
-/**
- * Authentication Middleware - JWT token validation and role-based access control
- * Provides middleware functions for protecting routes and enforcing permissions
- * 
- * Note: This file is currently empty and needs implementation for:
- * - JWT token verification
- * - User authentication checking
- * - Role-based authorization
- * - Request context population with user data
- */
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
 
-// TODO: Implement authentication middleware functions
-// - authMiddleware: Verify JWT token and populate req.user
-// - requireRole: Check if authenticated user has required role(s)
-// - optionalAuth: Allow both authenticated and unauthenticated access
-// - refreshTokenMiddleware: Handle token refresh logic
+dotenv.config();
 
-/**
- * Example implementation structure:
- * 
- * export function authMiddleware(req, res, next) {
- *   // Extract JWT token from Authorization header
- *   // Verify token signature and expiration
- *   // Populate req.user with decoded user information
- *   // Call next() if valid, return 401 if invalid
- * }
- * 
- * export function requireRole(...roles) {
- *   return (req, res, next) => {
- *     // Check if req.user exists (authenticated)
- *     // Verify user role is in allowed roles array
- *     // Call next() if authorized, return 403 if forbidden
- *   };
- * }
- */
+const JWT_SECRET = process.env.JWT_SECRET || "dev_secret_change_me";
 
-export default {};
+export function authMiddleware(req, res, next) {
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res.status(401).json({ error: "No token provided" });
+  }
+
+  const token = authHeader.split(" ")[1];
+
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    req.user = decoded;
+    next();
+  } catch (err) {
+    return res.status(401).json({ error: "Invalid or expired token" });
+  }
+}
+
+export function requireRole(...allowedRoles) {
+  return (req, res, next) => {
+    if (!req.user) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+    if (!allowedRoles.includes(req.user.role)) {
+      return res.status(403).json({ error: "Forbidden: insufficient role" });
+    }
+    next();
+  };
+}
+
+export function signToken(payload) {
+  return jwt.sign(payload, JWT_SECRET, { expiresIn: "1h" });
+}
+
