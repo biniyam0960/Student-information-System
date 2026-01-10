@@ -19,8 +19,7 @@
 // - forgotPasswordHandler: Initiate password reset process
 // - resetPasswordHandler: Complete password reset with new password
 
-export default {};
-=======
+
 import bcrypt from "bcryptjs";
 import { validationResult } from "express-validator";
 import { signToken } from "../middleware/auth.js";
