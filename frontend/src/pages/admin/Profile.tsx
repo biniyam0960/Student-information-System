@@ -18,7 +18,7 @@ const Profile: React.FC = () => {
 
   // Fetch admin profile
   useEffect(() => {
-    fetch("/api/admin/profile", {
+    fetch("http://localhost:8080/api/admin/profile", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -36,7 +36,7 @@ const Profile: React.FC = () => {
 
     setPasswordLoading(true);
 
-    await fetch("/api/users/change-password", {
+    await fetch("http://localhost:8080/api/users/change-password", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

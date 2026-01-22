@@ -11,7 +11,7 @@ const Schedule: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/student/schedule")
+    fetch("http://localhost:8080/api/student/schedule")
       .then(res => res.json())
       .then(data => {
         setSchedule(data);

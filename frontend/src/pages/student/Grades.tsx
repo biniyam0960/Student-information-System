@@ -10,7 +10,7 @@ const Grades: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/student/grades")
+    fetch("http://localhost:8080/api/student/grades")
       .then(res => res.json())
       .then(data => {
         setGrades(data);

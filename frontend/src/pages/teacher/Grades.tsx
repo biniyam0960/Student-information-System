@@ -22,7 +22,7 @@ const Grades: React.FC = () => {
       if (!token || !courseId) return;
 
       try {
-        const res = await fetch(`/api/teacher/course/${courseId}/grades`, {
+        const res = await fetch(`http://localhost:8080/api/teacher/course/${courseId}/grades`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -53,7 +53,7 @@ const Grades: React.FC = () => {
     setSaving(true);
 
     try {
-      const res = await fetch(`/api/teacher/course/${courseId}/grades`, {
+      const res = await fetch(`http://localhost:8080/api/teacher/course/${courseId}/grades`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

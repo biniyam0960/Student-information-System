@@ -25,7 +25,7 @@ const AssignCourses = ({ onAssigned }: Props) => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const res = await fetch("/api/admin/courses");
+        const res = await fetch("http://localhost:8080/api/admin/courses");
         const data: Course[] = await res.json();
         setCourses(data);
       } catch (err) {
@@ -56,7 +56,7 @@ const AssignCourses = ({ onAssigned }: Props) => {
 
     setSubmitting(true);
     try {
-      const res = await fetch("/api/admin/assign-courses", {
+      const res = await fetch("http://localhost:8080/api/admin/assign-courses", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ courseIds: selectedCourses, year, semester }),

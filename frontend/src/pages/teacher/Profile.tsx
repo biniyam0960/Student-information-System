@@ -19,7 +19,7 @@ const TeacherProfile: React.FC = () => {
 
   // Fetch teacher profile
   useEffect(() => {
-    fetch("/api/teacher/profile", {
+    fetch("http://localhost:8080/api/teacher/profile", {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then(res => res.json())
@@ -38,7 +38,7 @@ const TeacherProfile: React.FC = () => {
 
     setPasswordLoading(true);
     try {
-      const res = await fetch("/api/users/change-password", {
+      const res = await fetch("http://localhost:8080/api/users/change-password", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

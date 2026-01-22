@@ -31,8 +31,8 @@ const AssignTeacher = ({ onTeacherAssigned }: Props) => {
     const fetchData = async () => {
       try {
         const [coursesRes, teachersRes] = await Promise.all([
-          fetch("/api/admin/courses"),
-          fetch("/api/admin/users?role=teacher"),
+          fetch("http://localhost:8080/api/admin/courses"),
+          fetch("http://localhost:8080/api/admin/users?role=teacher"),
         ]);
 
         const coursesData: Course[] = await coursesRes.json();
@@ -58,7 +58,7 @@ const AssignTeacher = ({ onTeacherAssigned }: Props) => {
 
     setSubmitting(true);
     try {
-      const res = await fetch("/api/admin/courses/assign-teacher", {
+      const res = await fetch("http://localhost:8080/api/admin/courses/assign-teacher", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

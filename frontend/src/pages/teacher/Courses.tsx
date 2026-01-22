@@ -27,7 +27,7 @@ const Courses: React.FC = () => {
       }
 
       try {
-        const res = await fetch("/api/teacher/courses", {
+        const res = await fetch("http://localhost:8080/api/teacher/courses", {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (!res.ok) throw new Error("Failed to fetch courses");

@@ -11,7 +11,7 @@ const Courses: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/student/courses") // Replace with your backend endpoint
+    fetch("http://localhost:8080/api/student/courses") 
       .then(res => res.json())
       .then(data => {
         setCourses(data);

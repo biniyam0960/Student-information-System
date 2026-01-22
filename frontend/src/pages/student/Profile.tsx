@@ -12,7 +12,7 @@ const Profile: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/student/profile") // Replace with your backend API endpoint
+    fetch("http://localhost:8080/api/student/profile")
       .then(res => res.json())
       .then(data => {
         setStudent(data);
