@@ -23,7 +23,7 @@ const Schedule: React.FC = () => {
       }
 
       try {
-        const res = await fetch("/api/teacher/schedule", {
+        const res = await fetch("http://localhost:8080/api/teacher/schedule", {
           headers: { Authorization: `Bearer ${token}` },
         });
 

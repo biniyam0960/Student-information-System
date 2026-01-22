@@ -20,7 +20,7 @@ const StudentRoster: React.FC = () => {
             if (!token || !courseId) return;
 
             try {
-                const res = await fetch(`/api/teacher/course/${courseId}/students`, {
+                const res = await fetch(`http://localhost:8080/api/teacher/course/${courseId}/students`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
 

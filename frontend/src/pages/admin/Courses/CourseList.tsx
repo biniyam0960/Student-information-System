@@ -22,7 +22,7 @@ const CourseList = ({ refreshKey }: Props) => {
     const fetchCourses = async () => {
       setLoading(true);
       try {
-        const res = await fetch("/api/admin/courses");
+        const res = await fetch("http://localhost:8080/api/admin/courses");
         if (!res.ok) throw new Error("Failed to fetch courses");
         const data: Course[] = await res.json();
         setCourses(data);
