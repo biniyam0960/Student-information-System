@@ -57,7 +57,6 @@ export async function login(req, res, next) {
     const { email, password } = req.body;
 
     const user = await findUserByEmail(email);
-    console.log("User at login:", user);
 
     if (!user) return res.status(401).json({ error: "Invalid credentials" });
 
