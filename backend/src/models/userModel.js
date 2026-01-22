@@ -1,5 +1,5 @@
 // src/models/userModel.js
-import { db } from "../config/mockDb.js";
+import db from "../config/db.js";
 
 // Users table:
 // user_ID (PK), username, password_hash, email, role, first_name, last_name
